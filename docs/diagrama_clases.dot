@@ -1,0 +1,38 @@
+digraph G {
+  rankdir=TB; nodesep=0.35; ranksep=0.55; fontname="Helvetica";
+  node [shape=record, fontname="Helvetica", fontsize=10, style=filled, fillcolor="#FFFFFF", color="#6b5e55"];
+  edge [fontname="Helvetica", fontsize=9, color="#6b5e55"];
+  subgraph cluster_p { label="Presentación (screens / widgets)"; style=filled; fillcolor="#FBEDE4"; color="#B85C38"; fontsize=11;
+    Bloqueo [label="{BloqueoScreen|+ _desbloquear()}"];
+    Lista [label="{ListaEntradasScreen|- _carga: Future\<List\<EntradaDiario\>\>\l- _filtro: EstadoAnimo?\l|+ _nueva()\l+ _abrir(e)\l}"];
+    Detalle [label="{DetalleEntradaScreen|+ id: int\l|+ _abrirMaps(e)\l+ _eliminar(e)\l}"];
+    Nueva [label="{NuevaEntradaScreen|- _foto, _animo, _escuchando\l|+ _elegirFoto(origen)\l+ _alternarDictado()\l+ _guardar()\l}"];
+    Mapa [label="{MapaEntradasScreen}"]; Ajustes [label="{AjustesScreen}"];
+    Widgets [label="{AppDrawer · EntradaCard · FotoEntrada\l· MapaUbicacion · VistaVacia/VistaError\l}"];
+  }
+  subgraph cluster_c { label="Core"; style=filled; fillcolor="#F3F0EA"; color="#8a7f76"; fontsize=11;
+    Rutas [label="{AppRoutes|+ generar(settings)\l+ irDesdeDrawer(ctx, ruta)\l}"];
+    Deps [label="{Dependencias / AppScope|+ diario, media, voz,\l  ubicacion, auth\l}"];
+    Exc [label="{AppException|+ mensaje\l}|PermisoDenegadoException"];
+  }
+  subgraph cluster_d { label="Dominio"; style=filled; fillcolor="#E8F0F7"; color="#3d6a92"; fontsize=11;
+    Modelo [label="{EntradaDiario|id, titulo, contenido, fecha\lfoto, latitud, longitud, precision\lanimo: EstadoAnimo, dictado\l|+ toMap()\l+ fromMap(map)\l}"];
+    IRepo [label="{«interface»\nDiarioRepository|+ obtenerTodas()\l+ obtenerPorId(id)\l+ guardar(e)\l+ eliminar(e)\l}"];
+  }
+  subgraph cluster_s { label="Servicios de hardware (interfaces + implementación)"; style=filled; fillcolor="#EEF5EC"; color="#4f7a45"; fontsize=11;
+    Media [label="{«interface» MediaService|tomarFoto(origen)\larchivoDe(nombre)\l}"];
+    Voz [label="{«interface» SpeechService|iniciar(...)\ldetener()\l}"];
+    Ubic [label="{«interface» LocationService|obtenerActual()\labrirEnGoogleMaps(lat,lng)\l}"];
+    Auth [label="{«interface» AuthService|autenticar()\lbloqueoActivado()\l}"];
+  }
+  subgraph cluster_da { label="Datos"; style=filled; fillcolor="#F4ECF7"; color="#7a4f8a"; fontsize=11;
+    RepoSql [label="{DiarioRepositorySqlite}"];
+    DB [label="{DiarioDatabase|tabla entradas (SQLite)\l}"];
+  }
+  RepoSql -> IRepo [arrowhead=empty, style=dashed, label=" implementa"];
+  RepoSql -> DB; RepoSql -> Media [label=" borra fotos"]; RepoSql -> Modelo;
+  Deps -> IRepo; Deps -> Media; Deps -> Voz; Deps -> Ubic; Deps -> Auth;
+  Lista -> Deps [label=" AppScope.of"]; Nueva -> Deps; Detalle -> Deps; Bloqueo -> Deps; Mapa -> Deps; Ajustes -> Deps;
+  Lista -> Rutas [style=dotted]; Lista -> Widgets [style=dotted];
+  IRepo -> Modelo;
+}

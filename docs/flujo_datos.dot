@@ -1,0 +1,23 @@
+digraph F {
+  rankdir=LR; fontname="Helvetica"; nodesep=0.3;
+  node [fontname="Helvetica", fontsize=10, shape=box, style="rounded,filled", fillcolor="#FFFFFF", color="#6b5e55"];
+  edge [fontname="Helvetica", fontsize=9, color="#6b5e55"];
+  U [label="Usuario", shape=ellipse, fillcolor="#FBEDE4"];
+  F [label="NuevaEntradaScreen\n(formulario)"];
+  C [label="Cámara / Galería\n(image_picker)", fillcolor="#EEF5EC"];
+  M [label="Micrófono\n(speech_to_text, es-MX)", fillcolor="#EEF5EC"];
+  G [label="GPS\n(geolocator)", fillcolor="#EEF5EC"];
+  Doc [label="Documentos/fotos\n(archivo .jpg)", shape=cylinder, fillcolor="#F4ECF7"];
+  R [label="DiarioRepository\n(try-catch → AppException)"];
+  DB [label="SQLite\nhuellas.db", shape=cylinder, fillcolor="#F4ECF7"];
+  L [label="ListaEntradasScreen\n(FutureBuilder)"];
+  D [label="DetalleEntradaScreen\n(FutureBuilder + Hero)"];
+  Map [label="Mapa OSM /\nGoogle Maps", fillcolor="#E8F0F7"];
+  U -> F [label="escribe / dicta / toma foto"];
+  F -> C -> Doc [label="copia"]; C -> F [label="nombre de archivo", style=dashed];
+  F -> M; M -> F [label="texto transcrito", style=dashed];
+  F -> G [label="al guardar"]; G -> F [label="lat, lng, precisión", style=dashed];
+  F -> R [label="EntradaDiario.toMap()"]; R -> DB [label="INSERT"];
+  DB -> R [label="SELECT", style=dashed]; R -> L [label="List<EntradaDiario>"]; L -> D [label="Navigator + id"];
+  D -> Map [label="coordenadas"]; Doc -> D [label="foto", style=dashed];
+}
