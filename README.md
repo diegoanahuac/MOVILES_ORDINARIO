@@ -40,3 +40,5 @@ Cada servicio es una interfaz con una implementación concreta; las pantallas s�
 4. En el iPhone: Ajustes > General > VPN y gestión de dispositivos > confiar en el certificado del desarrollador.
 
 Pruebas: `flutter test`.
+
+El desglose completo de funcionalidades y código está en [docs/DESGLOSE.md](docs/DESGLOSE.md).
