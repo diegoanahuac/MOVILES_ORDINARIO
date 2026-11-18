@@ -73,8 +73,9 @@ class _DetalleEntradaScreenState extends State<DetalleEntradaScreen> {
               mensaje: snap.error is AppException
                   ? (snap.error as AppException).mensaje
                   : 'No se encontró la entrada.',
-              reintentar: () => setState(
-                  () => _carga = AppScope.of(context).diario.obtenerPorId(widget.id)),
+              reintentar: () => setState(() {
+                _carga = AppScope.of(context).diario.obtenerPorId(widget.id);
+              }),
             ),
           );
         }

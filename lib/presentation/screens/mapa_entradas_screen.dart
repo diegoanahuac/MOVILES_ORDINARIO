@@ -39,8 +39,9 @@ class _MapaEntradasScreenState extends State<MapaEntradasScreen> {
           if (snap.hasError) {
             return VistaError(
               mensaje: 'No se pudieron cargar tus entradas.',
-              reintentar: () => setState(
-                  () => _carga = AppScope.of(context).diario.obtenerTodas()),
+              reintentar: () => setState(() {
+                _carga = AppScope.of(context).diario.obtenerTodas();
+              }),
             );
           }
           final conLugar = (snap.data ?? []).where((e) => e.tieneUbicacion).toList();

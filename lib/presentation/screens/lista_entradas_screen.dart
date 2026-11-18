@@ -26,8 +26,12 @@ class _ListaEntradasScreenState extends State<ListaEntradasScreen> {
     _carga ??= AppScope.of(context).diario.obtenerTodas();
   }
 
-  void _recargar() =>
-      setState(() => _carga = AppScope.of(context).diario.obtenerTodas());
+  void _recargar() {
+    // La consulta se lanza dentro de un bloque: setState no debe devolver un Future.
+    setState(() {
+      _carga = AppScope.of(context).diario.obtenerTodas();
+    });
+  }
 
   Future<void> _nueva() async {
     final guardo = await Navigator.pushNamed(context, AppRoutes.nueva);

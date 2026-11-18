@@ -27,7 +27,9 @@ class _AjustesScreenState extends State<AjustesScreen> {
     // Para desactivar el bloqueo se pide verificar la identidad primero.
     if (!valor && !await auth.autenticar()) return;
     await auth.cambiarBloqueo(valor);
-    setState(() => _carga = Future.value((true, valor)));
+    setState(() {
+      _carga = Future.value((true, valor));
+    });
   }
 
   @override
