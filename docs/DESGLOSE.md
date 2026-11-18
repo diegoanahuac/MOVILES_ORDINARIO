@@ -230,7 +230,10 @@ Implementa la interfaz. Cada método está en `try-catch`: `DatabaseException` y
 - **Análisis estático** (`flutter analyze`): sin problemas.
 - **Integración** (`integration_test/recorrido_app_test.dart`, con `flutter drive`): recorre la app real en el simulador (SQLite real, GPS real, navegación real) y guarda 13 capturas en `docs/capturas` (la del bloqueo con Face ID y la del permiso de ubicación se tomaron aparte con `simctl`). Sólo la galería y el dictado se simulan, porque el simulador no tiene cámara y el dictado necesita una persona. Las fotos de demostración son fondos genéricos de macOS (`integration_test/demo_fotos.dart`).
 - **Error real encontrado por la prueba de integración:** al regresar del formulario la app fallaba porque `setState(() => _carga = ...)` devolvía un `Future`. Se corrigió en lista, detalle, mapa y ajustes usando un bloque `setState(() { ... })`.
-- **iPhone 13:** la app se instaló y abrió en el teléfono con el equipo de desarrollo personal.
+- **iPhone 13 real (iOS 27):** la app se instaló firmada con el equipo de desarrollo personal y se probó en el teléfono. Capturas en `docs/capturas_iphone`:
+  - Con iPhone Mirroring desde la Mac: autenticación al abrir (iOS la delega al Touch ID de la Mac), persistencia en SQLite tras cerrar y reabrir la app, formulario, guardado con GPS real (campus Anáhuac Mayab, ±21 m), detalle con mapa, apertura de la app de Google Maps con las coordenadas, Drawer, mapa de recuerdos y ajustes.
+  - Directamente en el teléfono: foto con la cámara trasera y texto dictado con el micrófono (la entrada muestra la etiqueta "Dictada").
+  - Hallazgo: durante iPhone Mirroring, iOS desactiva la cámara (la foto sale en negro) y el micrófono ("iPhone microphone is not available from Mac"). No es un error de la app; por eso esas dos funciones se probaron usando el teléfono directamente.
 
 Comandos:
 
@@ -263,6 +266,8 @@ flutter drive --driver=test_driver/integration_test.dart --target=integration_te
 | Corregir setState y agregar prueba de integración | Corrección del error y capturas automáticas |
 | Ignorar la carpeta de entrega | `.gitignore` |
 | Agregar desglose completo | Este documento |
+| Configurar el equipo de firma de iOS | `DEVELOPMENT_TEAM` para instalar en el iPhone |
+| Agregar capturas del iPhone real | `docs/capturas_iphone` y esta sección de pruebas |
 
 ## 11. Preguntas probables en la defensa
 

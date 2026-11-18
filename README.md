@@ -41,4 +41,6 @@ Cada servicio es una interfaz con una implementación concreta; las pantallas s�
 
 Pruebas: `flutter test`.
 
+Capturas: `docs/capturas_iphone` (iPhone 13 real) y `docs/capturas` (recorrido automatizado en el simulador).
+
 El desglose completo de funcionalidades y código está en [docs/DESGLOSE.md](docs/DESGLOSE.md).
